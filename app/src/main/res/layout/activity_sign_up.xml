@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToOutline="true"
+        android:overScrollMode="never"
+        android:padding="@dimen/_24ssp"
+        android:scrollbars="none"
+        tools:context=".activities.ui.SignUpActivity">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_40ssp"
+                android:text="Create an account"
+                android:textColor="@color/primary_tex"
+                android:textSize="@dimen/_30ssp"
+                android:textStyle="bold"/>
+
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp">
+
+<!--            <com.makeramen.roundedimageview.RoundedImageView-->
+<!--                    android:id="@+id/imageProfile"-->
+<!--                    android:layout_width="@dimen/_80ssp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:src="@drawable/background_image"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    app:riv_oval="true"/>-->
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Add photo"
+                    android:textColor="@color/secundary_text"
+                    android:textSize="@dimen/_10ssp"/>
+
+        </FrameLayout>
+
+        <EditText
+                android:id="@+id/inputName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30ssp"
+                android:background="@drawable/background_input"
+                android:hint="Name"
+                android:inputType="text"
+                android:padding="@dimen/_10ssp"
+                android:textColor="@color/primary_tex"
+                android:textSize="@dimen/_16ssp"/>
+
+        <EditText
+                android:id="@+id/inputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:background="@drawable/background_input"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/_10ssp"
+                android:textColor="@color/primary_tex"
+                android:textSize="@dimen/_16ssp"/>
+        <EditText android:id="@+id/InputPassword"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/_20ssp"
+                  android:background="@drawable/background_input"
+                  android:hint="Password"
+                  android:inputType="textPassword"
+                  android:padding="@dimen/_10ssp"
+                  android:textColor="@color/primary_tex"
+                  android:textSize="@dimen/_16ssp"/>
+
+        <EditText android:id="@+id/InputConfirmPassword"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/_20ssp"
+                  android:background="@drawable/background_input"
+                  android:hint="Confirm Password"
+                  android:inputType="textPassword"
+                  android:padding="@dimen/_10ssp"
+                  android:textColor="@color/primary_tex"
+                  android:textSize="@dimen/_16ssp"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50ssp"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:text="Sing Up"
+                android:textColor="@color/primary_tex"
+                android:textSize="@dimen/_16ssp"
+                app:cornerRadius="@dimen/_10ssp"
+                app:backgroundTint="@color/icon_background"
+        />
+        <TextView
+                android:id="@+id/txtSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:text="have an account? Sign in"
+                android:textColor="@color/primary_tex"
+                android:textSize="@dimen/_16ssp"
+                android:textStyle="bold"/>
+    </LinearLayout>
+
+</ScrollView>
