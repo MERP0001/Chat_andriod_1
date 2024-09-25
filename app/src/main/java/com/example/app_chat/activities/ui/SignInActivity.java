@@ -2,6 +2,7 @@ package com.example.app_chat.activities.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.app_chat.R;
@@ -21,12 +22,20 @@ public class SignInActivity extends AppCompatActivity {
         setListeners();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        auth.createUserWithEmailAndPassword("macatoto@gmail.com" , "dzjl61945R")
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    }
-                });
+        binding.btnSignIn.setOnClickListener(v -> {
+            String email = binding.inputEmail.getText().toString();
+            String password = binding.InputPassword.getText().toString();
+
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        });
 
     }
 
