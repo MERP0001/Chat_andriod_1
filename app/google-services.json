@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "722282498558",
-    "project_id": "my-chat-11911",
-    "storage_bucket": "my-chat-11911.appspot.com"
+    "project_number": "189701406639",
+    "project_id": "pucmm-354ac",
+    "storage_bucket": "pucmm-354ac.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:722282498558:android:837651ef18d5ee92c3d8af",
+        "mobilesdk_app_id": "1:189701406639:android:56e56d545fbf2ccfddb95a",
         "android_client_info": {
           "package_name": "com.example.app_chat"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAwyJRfseBW37dMuFbPkYLV6LBlREg3CrU"
+          "current_key": "AIzaSyDigv-sZilUFuZAUZJYJ6YkS07S49HYRd8"
         }
       ],
       "services": {
