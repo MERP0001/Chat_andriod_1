@@ -8,6 +8,9 @@ import android.os.Bundle;
 import com.example.app_chat.R;
 import com.example.app_chat.databinding.ActivitySignUpBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -28,6 +31,7 @@ public class SignUpActivity extends AppCompatActivity {
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
+                                addDataToFirestore();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
                             } else {
@@ -42,5 +46,20 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void setListernes() {
         binding.txtSignIn.setOnClickListener(v -> onBackPressed());
+    }
+
+    private void addDataToFirestore() {
+        String email = binding.inputEmail.getText().toString();
+        String name = binding.inputName.getText().toString();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("name", name);
+        data.put("email", email);
+        db.collection("users").add(data).addOnSuccessListener(documentReference -> {
+            Toast.makeText(SignUpActivity.this, "Data added successfully.", Toast.LENGTH_LONG).show();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(SignUpActivity.this, "Failed to add data.", Toast.LENGTH_LONG).show();
+        });
     }
 }

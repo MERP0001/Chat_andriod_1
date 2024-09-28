@@ -45,23 +45,9 @@ public class SignInActivity extends AppCompatActivity {
     private void setListeners() {
         binding.txtCreateAccount.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
-            addDataToFirestore();
         });
         binding.btnSignIn.setOnClickListener(v -> {
 //            addDataToFirestore();
-        });
-    }
-
-    private void addDataToFirestore() {
-        // Add data to Firestore here.
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("name", "John Doe");
-        data.put("email", "mmg27Gmail.com");
-        db.collection("users").add(data).addOnSuccessListener(documentReference -> {
-            Toast.makeText(SignInActivity.this, "Data added successfully.", Toast.LENGTH_LONG).show();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(SignInActivity.this, "Failed to add data.", Toast.LENGTH_LONG).show();
         });
     }
 }
