@@ -25,20 +25,20 @@ public class SignInActivity extends AppCompatActivity {
         setListeners();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        binding.btnSignIn.setOnClickListener(v -> {
-            String email = binding.inputEmail.getText().toString();
-            String password = binding.InputPassword.getText().toString();
-
-            auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
-                        }
-                    });
-        });
+//        binding.btnSignIn.setOnClickListener(v -> {
+//            String email = binding.inputEmail.getText().toString();
+//            String password = binding.InputPassword.getText().toString();
+//
+//            auth.signInWithEmailAndPassword(email, password)
+//                    .addOnCompleteListener(task -> {
+//                        if (task.isSuccessful()) {
+//                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//                            finish();
+//                        } else {
+//                            Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+//        });
 
     }
 
@@ -47,7 +47,7 @@ public class SignInActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
         });
         binding.btnSignIn.setOnClickListener(v -> {
-//            addDataToFirestore();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         });
     }
 }
