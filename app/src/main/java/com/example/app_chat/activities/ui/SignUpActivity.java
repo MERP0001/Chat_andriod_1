@@ -2,6 +2,7 @@ package com.example.app_chat.activities.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,10 @@ public class SignUpActivity extends AppCompatActivity {
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 addDataToFirestore();
+                                SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("email", email);
+                                editor.apply();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
                             } else {

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.example.app_chat.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -33,6 +34,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-        // Lógica de cierre de sesión
+        System.out.println("Sign out");
+        // Obtén la instancia de FirebaseAuth
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        // Cierra la sesión del usuario actual
+        auth.signOut();
+
+        // Elimina el email del usuario de SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("email");
+        editor.apply();
+
+        // Redirige al usuario a la actividad de inicio de sesión
+        startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+        finish();
     }
 }

@@ -2,6 +2,7 @@ package com.example.app_chat.activities.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,23 +23,39 @@ public class SignInActivity extends AppCompatActivity {
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Recuperar el email del usuario de SharedPreferences
+        SharedPreferences cache = getSharedPreferences("user_info", MODE_PRIVATE);
+        String emailCheck = cache.getString("email", null);
+
+        // Si el email existe, iniciar MainActivity directamente
+        if (emailCheck != null) {
+            System.out.println("Email in cache");
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+            return;
+        }
+
         setListeners();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
-//        binding.btnSignIn.setOnClickListener(v -> {
-//            String email = binding.inputEmail.getText().toString();
-//            String password = binding.InputPassword.getText().toString();
-//
-//            auth.signInWithEmailAndPassword(email, password)
-//                    .addOnCompleteListener(task -> {
-//                        if (task.isSuccessful()) {
-//                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//                            finish();
-//                        } else {
-//                            Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-//        });
+        binding.btnSignIn.setOnClickListener(v -> {
+            String email = binding.inputEmail.getText().toString();
+            String password = binding.InputPassword.getText().toString();
+
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", email);
+                            editor.apply();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        });
 
     }
 
