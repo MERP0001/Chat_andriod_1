@@ -45,9 +45,11 @@ public class SignInActivity extends AppCompatActivity {
             auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  // Aquí se obtiene el UID del usuario
                             SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("email", email);
+                            editor.putString("user_id", uid);  // Aquí se guarda el UID del usuario
                             editor.apply();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();

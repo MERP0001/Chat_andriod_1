@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("email");
+        editor.remove("user_id");
         editor.apply();
 
         // Redirige al usuario a la actividad de inicio de sesión

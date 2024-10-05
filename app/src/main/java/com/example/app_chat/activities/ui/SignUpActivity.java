@@ -16,6 +16,7 @@ import java.util.HashMap;
 public class SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
+    private SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +33,12 @@ public class SignUpActivity extends AppCompatActivity {
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                addDataToFirestore();
-                                SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+                                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  // Aquí se obtiene el UID del usuario
+                                addDataToFirestore(uid);  // Pasamos el UID al método addDataToFirestore
+                                sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString("email", email);
+                                editor.putString("user_id", uid);  // Aquí se guarda el UID del usuario en las preferencias compartidas
                                 editor.apply();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
@@ -53,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding.txtSignIn.setOnClickListener(v -> onBackPressed());
     }
 
-    private void addDataToFirestore() {
+    private void addDataToFirestore(String uid) {
         String email = binding.inputEmail.getText().toString();
         String name = binding.inputName.getText().toString();
 
@@ -61,7 +64,8 @@ public class SignUpActivity extends AppCompatActivity {
         HashMap<String, Object> data = new HashMap<>();
         data.put("name", name);
         data.put("email", email);
-        db.collection("users").add(data).addOnSuccessListener(documentReference -> {
+        data.put("id", uid);  // Aquí se guarda el UID del usuario en Firestore
+        db.collection("users").document(uid).set(data).addOnSuccessListener(aVoid -> {
             Toast.makeText(SignUpActivity.this, "Data added successfully.", Toast.LENGTH_LONG).show();
         }).addOnFailureListener(e -> {
             Toast.makeText(SignUpActivity.this, "Failed to add data.", Toast.LENGTH_LONG).show();
