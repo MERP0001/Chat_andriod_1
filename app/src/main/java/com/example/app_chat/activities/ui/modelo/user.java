@@ -7,6 +7,7 @@ public class user implements Serializable {
     private String email;
     private String image;
     private String token;
+    private String id;
 
     public user() {
     }
@@ -30,6 +31,9 @@ public class user implements Serializable {
     public String getToken() {
         return token;
     }
+    public String getId() {
+        return id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -42,5 +46,8 @@ public class user implements Serializable {
     }
     public void setToken(String token) {
         this.token = token;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 }

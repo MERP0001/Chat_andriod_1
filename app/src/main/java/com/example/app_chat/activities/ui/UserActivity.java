@@ -1,5 +1,6 @@
 package com.example.app_chat.activities.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.app_chat.R;
 import com.example.app_chat.activities.ui.adapter.UsersAdapter;
+import com.example.app_chat.activities.ui.listerner.UserListerner;
 import com.example.app_chat.activities.ui.modelo.user;  // Cambiado a mayúscula
 import com.example.app_chat.databinding.ActivityUserBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,7 +20,7 @@ import com.google.firebase.firestore.auth.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity implements UserListerner {
 
     private ActivityUserBinding binding;
     private SharedPreferences preferenceManager;  // Cambiado a SharedPreferences
@@ -71,7 +73,7 @@ public class UserActivity extends AppCompatActivity {
                             users.add(user);
                         }
                         if (users.size() > 0) {
-                            UsersAdapter userAdapter = new UsersAdapter(users);
+                            UsersAdapter userAdapter = new UsersAdapter(users, this);
                             binding.usersRecyclerView.setAdapter(userAdapter);
                             binding.usersRecyclerView.setVisibility(View.VISIBLE);
                         } else {
@@ -89,5 +91,13 @@ public class UserActivity extends AppCompatActivity {
         } else {
             binding.progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onUserCkicked(user user) {
+        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+        finish();
     }
 }
