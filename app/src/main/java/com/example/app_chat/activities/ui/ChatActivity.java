@@ -1,11 +1,15 @@
 package com.example.app_chat.activities.ui;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.preference.PreferenceManager; // Este import puede necesitar cambio si usas AndroidX
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.app_chat.R;
@@ -30,6 +34,9 @@ public class ChatActivity extends AppCompatActivity {
     private android.content.SharedPreferences preferenceManager; // Cambiar tipo a SharedPreferences
     private FirebaseFirestore database;
     private String id_sender_activo = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int CAPTURE_IMAGE_REQUEST = 2;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +54,35 @@ public class ChatActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        findViewById(R.id.shareImage ).setOnClickListener(v -> openImageChooser());
+    }
+    //Subir imagen
+    private void openImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            uploadImageToDatabase(imageUri);
+        }
+    }
+
+    private void uploadImageToDatabase(Uri imageUri) {
+        // Aquí puedes agregar el código para subir la imagen a tu base de datos
+
+    }
+
+
+
+
+    //=============================
     private void init() {
         // Initialize preferenceManager using the correct method
         preferenceManager = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

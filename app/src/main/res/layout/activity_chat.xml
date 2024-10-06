@@ -19,6 +19,7 @@
         app:layout_constraintBottom_toTopOf="@id/inputMessage"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
+
     <View
             android:id="@+id/headerBackground"
             android:layout_width="match_parent"
@@ -52,7 +53,7 @@
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/imageBack"
-            app:layout_constraintEnd_toStartOf="@id/imageInfo"
+            app:layout_constraintEnd_toStartOf="@id/shareImage"
             app:layout_constraintStart_toEndOf="@id/imageBack"
             app:layout_constraintTop_toTopOf="@id/imageBack" />
 
@@ -91,13 +92,14 @@
 
 
     <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageInfo"
+            android:id="@+id/shareImage"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:padding="@dimen/_5sdp"
-            app:srcCompat="@drawable/ic_round"
+            app:srcCompat="@drawable/ic_share"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
     <FrameLayout
@@ -119,6 +121,8 @@
                 app:tint="@color/white" />
 
     </FrameLayout>
+
+
 
     <!-- EditText para ingresar el mensaje -->
     <EditText
