@@ -13,6 +13,7 @@ import com.example.app_chat.activities.ui.adapter.UsersAdapter;
 import com.example.app_chat.activities.ui.listerner.UserListerner;
 import com.example.app_chat.activities.ui.modelo.user;  // Cambiado a mayúscula
 import com.example.app_chat.databinding.ActivityUserBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.auth.User;
@@ -55,15 +56,13 @@ public class UserActivity extends AppCompatActivity implements UserListerner {
                 .get()
                 .addOnCompleteListener(task -> {
                     loading(false);
-                    String currentUserId = preferenceManager.getString("id", null);  // Obtiene el userId del preferenceManager
+                    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();  // Obtiene el userId del preferenceManager
                     if (task.isSuccessful() && task.getResult() != null) {
                         List<user> users = new ArrayList<>();  // Cambiado a List<User>
                         for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                            System.out.println("currentUserId: " + currentUserId);
-                            System.out.println("queryDocumentSnapshot.getId(): " + queryDocumentSnapshot.getId());
-//                            if (!currentUserId.equals(queryDocumentSnapshot.getId())) {  // Comprobación correcta de id diferente
-//
-//                            }
+                            if (currentUserId.equals(queryDocumentSnapshot.getId())) {  // Comprobación correcta de id diferente
+                                continue;
+                            }
                             user user = new user();  // Cambiado a User
                             user.setEmail(queryDocumentSnapshot.getString("email"));
                             user.setName(queryDocumentSnapshot.getString("name"));

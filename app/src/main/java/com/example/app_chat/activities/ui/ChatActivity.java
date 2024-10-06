@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager; // Este import puede necesitar cambio si usas AndroidX
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import com.example.app_chat.activities.ui.adapter.CharAdapter;
 import com.example.app_chat.activities.ui.modelo.ChatMessage;
 import com.example.app_chat.activities.ui.modelo.user;
 import com.example.app_chat.databinding.ActivityChatBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,6 +29,7 @@ public class ChatActivity extends AppCompatActivity {
     private CharAdapter chatAdapter;
     private android.content.SharedPreferences preferenceManager; // Cambiar tipo a SharedPreferences
     private FirebaseFirestore database;
+    private String id_sender_activo = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void sendMessage() {
         HashMap<String, Object> message = new HashMap<>();
-        message.put("id_sender", preferenceManager.getString("id", null));
+        message.put("id_sender", id_sender_activo);
         message.put("id_receiver", receiverUser.getId());
         message.put("id_message", binding.inputMessage.getText().toString());
         message.put("time_stamp", new Date());
@@ -70,14 +73,16 @@ public class ChatActivity extends AppCompatActivity {
 
     private void listenMessages() {
         database.collection("id_chat")
-                .whereEqualTo("id_sender", preferenceManager.getString("id", null))
+                .whereEqualTo("id_sender", id_sender_activo)
                 .whereEqualTo("id_receiver", receiverUser.getId())
                 .addSnapshotListener(eventListener);
 
         database.collection("id_chat")
                 .whereEqualTo("id_sender", receiverUser.getId())
-                .whereEqualTo("id_receiver", preferenceManager.getString("id", null))
+                .whereEqualTo("id_receiver", id_sender_activo)
                 .addSnapshotListener(eventListener);
+
+
     }
 
 
@@ -98,6 +103,11 @@ public class ChatActivity extends AppCompatActivity {
                     chatMessage.dateTime = getReadableDateTimestamp(documentChange.getDocument().getDate("time_stamp"));
                     chatMessage.dateObject = documentChange.getDocument().getDate("time_stamp");
                     chatMessages.add(chatMessage);
+                    Log.d("ChatActivity", "Mensaje recibido: " +
+                            "\nID Emisor: " + chatMessage.senderId +
+                            "\nID Receptor: " + chatMessage.receiverId +
+                            "\nMensaje: " + chatMessage.message +
+                            "\nTimestamp: " + chatMessage.dateTime);
                 }
             }
             Collections.sort(chatMessages, (obj1, obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
@@ -110,6 +120,9 @@ public class ChatActivity extends AppCompatActivity {
             binding.chatRecyclerView.setVisibility(View.VISIBLE);
         }
         binding.progressBar.setVisibility(View.GONE);
+//        Log.d("ChatActivity", "Mensajes recibidos: " + value.getDocumentChanges().size());
+//        Log.d("ChatActivity", "Mensajes recibidos: " + value.getDocumentChanges().size());
+
 
     };
 

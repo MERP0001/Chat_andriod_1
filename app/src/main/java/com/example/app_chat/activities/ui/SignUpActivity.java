@@ -13,7 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
-public class SignUpActivity extends AppCompatActivity {
+public class  SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
     private SharedPreferences sharedPreferences;
@@ -33,7 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();  // Aquí se obtiene el UID del usuario
+                                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();// Aquí se obtiene el UID del usuario
                                 addDataToFirestore(uid);  // Pasamos el UID al método addDataToFirestore
                                 sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
