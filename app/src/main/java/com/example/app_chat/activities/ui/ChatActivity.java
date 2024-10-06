@@ -53,7 +53,7 @@ public class ChatActivity extends AppCompatActivity {
             chatAdapter = new CharAdapter(
                     chatMessages,
 //                    getBitmapFromEncodedString(receiverUser.getImage()), // Usar método getter para el campo privado
-                    preferenceManager.getString("id", null) // Proporcionar un valor por defecto para getString
+                    id_sender_activo // Proporcionar un valor por defecto para getString
             );
 
             binding.chatRecyclerView.setAdapter(chatAdapter);
