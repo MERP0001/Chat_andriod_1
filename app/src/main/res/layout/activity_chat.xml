@@ -11,13 +11,14 @@
 
     <!-- FrameLayout para el botón de enviar mensaje -->
     <View
-            android:id="@+id/viewBackground"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/background_content_top"
-            app:layout_constraintBottom_toTopOf="@id/layoutSend"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/viewBackground"
+        android:layout_width="411dp"
+        android:layout_height="657dp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@drawable/background_content_top"
+        app:layout_constraintBottom_toTopOf="@id/inputMessage"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
     <View
             android:id="@+id/headerBackground"
             android:layout_width="match_parent"
@@ -67,16 +68,17 @@
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="75dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="@dimen/_2sdp"
-        app:stackFromEnd="true"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@id/viewBackground"
-        app:layout_constraintTop_toBottomOf="@id/viewSupporter" />
-
+        app:layout_constraintBottom_toTopOf="@id/inputMessage"
+        app:layout_constraintTop_toBottomOf="@id/headerBackground"
+        app:stackFromEnd="true" />
     <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="@dimen/_25sdp"

@@ -67,7 +67,7 @@ public class CharAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void setData(ChatMessage chatMessage) {
             binding.textMessage.setText(chatMessage.message);
-            binding.textDateTime.setText(chatMessage.dateTime);
+            binding.textDatetime.setText(chatMessage.dateTime);
         }
     }
 

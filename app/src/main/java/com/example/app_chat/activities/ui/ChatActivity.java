@@ -39,7 +39,14 @@ public class ChatActivity extends AppCompatActivity {
         loadDetailsReceiver();
         init(); // Llamar a init() después de cargar detalles del receptor
         setListeners();// Llamar a setListeners para inicializar los listeners
-        listenMessages(); // Llamar a listenMessages para escuchar mensajes
+        listenMessages();// Llamar a listenMessages para escuchar mensajes
+
+        findViewById(R.id.imageBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void init() {
