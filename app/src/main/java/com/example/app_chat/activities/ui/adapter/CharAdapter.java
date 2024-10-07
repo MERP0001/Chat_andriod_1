@@ -1,9 +1,14 @@
 package com.example.app_chat.activities.ui.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.app_chat.R;
 import com.example.app_chat.activities.ui.modelo.ChatMessage;
 import com.example.app_chat.databinding.ItemContainerReceivedMessageBinding;
 import com.example.app_chat.databinding.ItemContainesSentMessageBinding;
@@ -68,6 +73,17 @@ public class CharAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void setData(ChatMessage chatMessage) {
             binding.textMessage.setText(chatMessage.message);
             binding.textDatetime.setText(chatMessage.dateTime);
+            Log.d("ChatAdapter", "setData: " + chatMessage.imageUrl);
+            if (chatMessage.imageUrl == null) {
+                binding.imageMessage.setVisibility(View.GONE);
+            } else {
+                binding.imageMessage.setVisibility(View.VISIBLE);
+                Glide.with(binding.imageMessage.getContext())
+                        .load(chatMessage.imageUrl)
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder)
+                        .into(binding.imageMessage);
+            }
         }
     }
 
