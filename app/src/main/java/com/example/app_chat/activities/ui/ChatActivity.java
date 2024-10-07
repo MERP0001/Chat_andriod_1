@@ -79,8 +79,20 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void uploadImageToDatabase(Uri imageUri) {
-        // Aquí puedes agregar el código para subir la imagen a tu base de datos
-
+        Map<String, Object> imageData = new HashMap<>();
+        imageData.put("imageUrl", imageUri.toString());
+        imageData.put("id_sender", id_sender_activo);
+        imageData.put("id_receiver", receiverUser.getId());
+        imageData.put("time_stamp", new Date());
+        database.collection("id_chat").document().set(imageData);
+        database.collection("id_chat")
+                .add(imageData)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "Imagen guardada exitosamente en Firestore", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al guardar en Firestore", Toast.LENGTH_SHORT).show();
+                });
     }
 
 
@@ -181,6 +193,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatMessage.senderId = documentChange.getDocument().getString("id_sender");
                     chatMessage.receiverId = documentChange.getDocument().getString("id_receiver");
                     chatMessage.message = documentChange.getDocument().getString("id_message");
+                    chatMessage.imageUrl = documentChange.getDocument().getString("imageUrl");
                     chatMessage.dateTime = getReadableDateTimestamp(documentChange.getDocument().getDate("time_stamp"));
                     chatMessage.dateObject = documentChange.getDocument().getDate("time_stamp");
                     chatMessages.add(chatMessage);

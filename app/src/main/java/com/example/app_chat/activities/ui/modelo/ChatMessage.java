@@ -1,5 +1,7 @@
 package com.example.app_chat.activities.ui.modelo;
 
+import android.net.Uri;
+
 import java.util.Date;
 
 public class ChatMessage {

@@ -50,7 +50,7 @@ public class CharAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public int getItemViewType(int position) {
-         if (chatMessages.get(position).senderId.equals(senderId)) {
+        if (chatMessages.get(position).senderId.equals(senderId)) {
             return VIEW_TYPE_SENT;
         } else {
             return VIEW_TYPE_RECEIVED;
@@ -82,7 +82,7 @@ public class CharAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void setData(ChatMessage chatMessage) {
             binding.textMessage.setText(chatMessage.message);
             binding.textDatetime.setText(chatMessage.dateTime);
-            
+
         }
     }
 
