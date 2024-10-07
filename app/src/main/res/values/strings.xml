@@ -3,4 +3,5 @@
     <string name="title_activity_sign_in">SignInActivity</string>
     <string name="a_message"/>
     <string name="type_a_message"/>
+    <string name="image_message">Image Message</string>
 </resources>

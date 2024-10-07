@@ -18,6 +18,7 @@ import com.example.app_chat.activities.ui.adapter.CharAdapter;
 import com.example.app_chat.activities.ui.modelo.ChatMessage;
 import com.example.app_chat.activities.ui.modelo.user;
 import com.example.app_chat.databinding.ActivityChatBinding;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -51,7 +52,7 @@ public class ChatActivity extends AppCompatActivity {
         init(); // Llamar a init() después de cargar detalles del receptor
         setListeners();// Llamar a setListeners para inicializar los listeners
         listenMessages();// Llamar a listenMessages para escuchar mensajes
-
+        Fresco.initialize(this);
         findViewById(R.id.imageBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

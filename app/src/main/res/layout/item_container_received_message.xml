@@ -21,6 +21,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.75" />
 
+    <ImageView
+            android:id="@+id/imageMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:contentDescription="@string/image_message"
+            android:background="@drawable/image_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textMessage"
+            app:layout_constraintEnd_toEndOf="parent" />
+
 
     <TextView
         android:id="@+id/textDatetime"
