@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());  // Usando binding.getRoot()
+        SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+        String UID = sharedPreferences.getString("user_id", null);  // Usando SharedPreferences correctamente
 
         preferenceManager = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());  // Usando SharedPreferences correctamente
         setListeners();

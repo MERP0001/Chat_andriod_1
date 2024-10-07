@@ -10,6 +10,7 @@ import com.example.app_chat.R;
 import com.example.app_chat.databinding.ActivitySignUpBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 
@@ -40,6 +41,17 @@ public class  SignUpActivity extends AppCompatActivity {
                                 editor.putString("email", email);
                                 editor.putString("user_id", uid);  // Aquí se guarda el UID del usuario en las preferencias compartidas
                                 editor.apply();
+                                FirebaseMessaging.getInstance().getToken()
+                                        .addOnCompleteListener(tokenTask -> {
+                                            if(tokenTask.isSuccessful()){
+                                                String token = tokenTask.getResult();
+                                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                db.collection("users").document(uid)
+                                                        .update("token", token);
+                                            }else{
+                                                Toast.makeText(SignUpActivity.this, "Token not generated", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
                             } else {

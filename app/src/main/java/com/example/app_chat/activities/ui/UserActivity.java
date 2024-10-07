@@ -67,6 +67,7 @@ public class UserActivity extends AppCompatActivity implements UserListerner {
                             user.setEmail(queryDocumentSnapshot.getString("email"));
                             user.setName(queryDocumentSnapshot.getString("name"));
                             user.setId(queryDocumentSnapshot.getString("id"));
+                            user.setToken(queryDocumentSnapshot.getString("token"));
                             // Se pueden añadir otros atributos como image y token si son necesarios
                             users.add(user);
                         }
