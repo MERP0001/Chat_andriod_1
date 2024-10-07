@@ -113,45 +113,44 @@ public class ChatActivity extends AppCompatActivity {
         message.put("id_message", binding.inputMessage.getText().toString());
         message.put("time_stamp", new Date());
         database.collection("id_chat").add(message);
-        sendNotification(binding.inputMessage.getText().toString());
         binding.inputMessage.setText(null);
     }
 
-    private void sendNotification(String message) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document(id_sender_activo).get()
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        String nameSender = task.getResult().getString("name");
-                        db.collection("users").document(receiverUser.getId())
-                                .get()
-                                .addOnCompleteListener(doccumentSnapshot -> {
-                                    String token = doccumentSnapshot.getResult().getString("token");
-
-                                    Map<String, String> notification = new HashMap<>();
-                                    notification.put("title", nameSender);
-                                    notification.put("body", message);
-
-                                    Map<String, String> data = new HashMap<>();
-                                    data.put("id_sender", id_sender_activo);
-                                    data.put("id_receiver", receiverUser.getId());
-
-                                    FirebaseMessaging fm = FirebaseMessaging.getInstance();
-                                    String messageId = UUID.randomUUID().toString();
-                                    fm.send(new RemoteMessage.Builder(token)
-                                            .setMessageId(messageId)
-                                            .addData("notification", new Gson().toJson(notification))
-                                            .addData("data", new Gson().toJson(data))
-                                            .build());
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Failed to send notification", Toast.LENGTH_LONG).show();
-                                });
-                    } else{
-                        Log.d("ChatActivity", "Error getting sender name", task.getException());
-                    }
-                });
-    }
+//    private void sendNotification(String message) {
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("users").document(id_sender_activo).get()
+//                .addOnCompleteListener(task -> {
+//                    if(task.isSuccessful()){
+//                        String nameSender = task.getResult().getString("name");
+//                        db.collection("users").document(receiverUser.getId())
+//                                .get()
+//                                .addOnCompleteListener(doccumentSnapshot -> {
+//                                    String token = doccumentSnapshot.getResult().getString("token");
+//
+//                                    Map<String, String> notification = new HashMap<>();
+//                                    notification.put("title", nameSender);
+//                                    notification.put("body", message);
+//
+//                                    Map<String, String> data = new HashMap<>();
+//                                    data.put("id_sender", id_sender_activo);
+//                                    data.put("id_receiver", receiverUser.getId());
+//
+//                                    FirebaseMessaging fm = FirebaseMessaging.getInstance();
+//                                    String messageId = UUID.randomUUID().toString();
+//                                    fm.send(new RemoteMessage.Builder(token)
+//                                            .setMessageId(messageId)
+//                                            .addData("notification", new Gson().toJson(notification))
+//                                            .addData("data", new Gson().toJson(data))
+//                                            .build());
+//                                })
+//                                .addOnFailureListener(e -> {
+//                                    Toast.makeText(this, "Failed to send notification", Toast.LENGTH_LONG).show();
+//                                });
+//                    } else{
+//                        Log.d("ChatActivity", "Error getting sender name", task.getException());
+//                    }
+//                });
+//    }
 
     private void listenMessages() {
         database.collection("id_chat")
