@@ -101,7 +101,7 @@ public class CharAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 binding.imageMessage.setVisibility(View.GONE);
             } else {
                 binding.imageMessage.setVisibility(View.VISIBLE);
-                binding.imageMessage.setImageURI(Uri.parse(chatMessage.imageUrl));
+                Glide.with(binding.imageMessage.getContext()).load(chatMessage.imageUrl).into(binding.imageMessage);
             }
 
         }

@@ -115,14 +115,20 @@ public class MainActivity extends AppCompatActivity {
     private void signOut() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String userId = getSharedPreferences("user_info", MODE_PRIVATE).getString("user_id", null);
-
+        Log.d("ID_USUARIO", userId);
         if (userId != null) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("users").document(userId)
-                    .update("token", FieldValue.delete())
+                    .update("token", "0")
                     .addOnSuccessListener(aVoid -> Log.d("SignOut", "Token eliminado exitosamente"))
                     .addOnFailureListener(e -> Log.d("SignOut", "Error al eliminar el token: ", e));
         }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(userId)
+                .update("token", null)
+                .addOnSuccessListener(aVoid -> Log.d("SignOut", "Token eliminado exitosamente"))
+                .addOnFailureListener(e -> Log.d("SignOut", "Error al eliminar el token: ", e));
+
 
         auth.signOut();
         getSharedPreferences("user_info", MODE_PRIVATE).edit().clear().apply();
