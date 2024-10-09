@@ -69,9 +69,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-messaging:24.0.1")
+    implementation("com.google.firebase:firebase-messaging:24.0.2")
     implementation("com.google.firebase:firebase-firestore:25.1.0")
-    implementation("com.firebase.ui:firebase-ui-auth:9.0.0")
     //manejo de tamaño de pantalla
     implementation("com.intuit.sdp:sdp-android:1.0.6")
     implementation("com.intuit.ssp:ssp-android:1.0.6")

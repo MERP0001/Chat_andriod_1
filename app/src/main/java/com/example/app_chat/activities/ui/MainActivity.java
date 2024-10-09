@@ -16,6 +16,7 @@ import com.example.app_chat.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void signOut() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseMessaging fm = FirebaseMessaging.getInstance();
         String userId = getSharedPreferences("user_info", MODE_PRIVATE).getString("user_id", null);
         Log.d("ID_USUARIO", userId);
         if (userId != null) {
@@ -131,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         auth.signOut();
+        fm.deleteToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("SignOut", "Token eliminado exitosamente");
+                    } else {
+                        Log.d("SignOut", "Error al eliminar el token: ", task.getException());
+                    }
+                });
         getSharedPreferences("user_info", MODE_PRIVATE).edit().clear().apply();
         startActivity(new Intent(getApplicationContext(), SignInActivity.class));
         finish();
