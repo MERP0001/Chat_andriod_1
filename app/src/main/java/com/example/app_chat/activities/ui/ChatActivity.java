@@ -1,5 +1,6 @@
 package com.example.app_chat.activities.ui;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,8 +27,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 //import com.google.gson.Gson;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class ChatActivity extends AppCompatActivity {
@@ -75,19 +82,64 @@ public class ChatActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
-            uploadImageToDatabase(imageUri);
+            uploadImageToFirebase(imageUri);
         }
     }
 
-    private void uploadImageToDatabase(Uri imageUri) {
+    private void uploadImageToFirebase(Uri imageUri) {
+        ContentResolver contentResolver = getContentResolver();
+        try {
+            InputStream inputStream = contentResolver.openInputStream(imageUri);
+
+            if (inputStream != null) {
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference("Imagenes/" + System.currentTimeMillis() + ".jpg");
+                Log.d("ChatActivity", "Subiendo imagen...");
+
+                UploadTask uploadTask = storageRef.putStream(inputStream);
+                uploadTask.addOnSuccessListener(taskSnapshot -> {
+                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String downloadUrl = uri.toString();
+                        saveImageDataToFirestore(downloadUrl);
+                    });
+                }).addOnFailureListener(e -> {
+                    Log.e("ChatActivity", "Error al subir imagen: " + e.getMessage());
+                    Toast.makeText(ChatActivity.this, "Error al subir imagen: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }).addOnCompleteListener(task -> {
+                    // Cerrar el InputStream después de completar la carga
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        Log.e("ChatActivity", "Error al cerrar InputStream: " + e.getMessage());
+                    }
+                });
+            } else {
+                Log.e("ChatActivity", "Error al abrir la imagen. InputStream es nulo.");
+                Toast.makeText(this, "Error al abrir la imagen. InputStream es nulo.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("ChatActivity", "Archivo no encontrado: " + e.getMessage());
+            Toast.makeText(this, "Archivo no encontrado. Verifica el URI.", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Log.e("ChatActivity", "Error de IO: " + e.getMessage());
+            Toast.makeText(this, "Error de IO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e("ChatActivity", "Error al manejar la imagen: " + e.getMessage());
+            e.printStackTrace();
+            Toast.makeText(this, "Error al manejar la imagen: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+    private void saveImageDataToFirestore(String downloadUrl) {
         Map<String, Object> imageData = new HashMap<>();
-        imageData.put("imageUrl", imageUri.toString());
+        imageData.put("imageUrl", downloadUrl);
         imageData.put("id_sender", id_sender_activo);
         imageData.put("id_receiver", receiverUser.getId());
         imageData.put("time_stamp", new Date());
-        database.collection("id_chat").document().set(imageData);
-        database.collection("id_chat")
-                .add(imageData)
+
+        database.collection("id_chat").add(imageData)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Imagen guardada exitosamente en Firestore", Toast.LENGTH_SHORT).show();
                 })
@@ -95,6 +147,7 @@ public class ChatActivity extends AppCompatActivity {
                     Toast.makeText(this, "Error al guardar en Firestore", Toast.LENGTH_SHORT).show();
                 });
     }
+
 
 
 
